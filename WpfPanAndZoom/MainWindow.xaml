@@ -6,11 +6,10 @@
         xmlns:local="clr-namespace:WpfPanAndZoom"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="mwGrid" Background="Gray">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="61*"/>
-            <ColumnDefinition Width="11*"/>
-        </Grid.ColumnDefinitions>
 
-    </Grid>
+ 
+        <Canvas x:Name="canvas"  Background="Gray"  >
+
+        </Canvas>
+ 
 </Window>

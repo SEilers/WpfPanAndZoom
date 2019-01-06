@@ -13,7 +13,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Rectangle Grid.Row="0" Fill="Lime" />
+            <Rectangle x:Name="HeaderRectangle"  Grid.Row="0" Fill="Lime" />
             <TextBlock x:Name="Header" Grid.Row="0" Text="Widget" HorizontalAlignment="Left" VerticalAlignment="Center"  />
             <Rectangle Grid.Row="1" Fill="LightGray" />
         </Grid>
