@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="WpfPanAndZoom.CustomControls.Widget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WpfPanAndZoom.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="200">
+    <Border x:Name="Border" BorderBrush="Black" BorderThickness="3">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Rectangle Grid.Row="0" Fill="Lime" />
+            <TextBlock x:Name="Header" Grid.Row="0" Text="Widget" HorizontalAlignment="Left" VerticalAlignment="Center"  />
+            <Rectangle Grid.Row="1" Fill="LightGray" />
+        </Grid>
+    </Border>
+</UserControl>
