@@ -25,8 +25,10 @@ namespace WpfPanAndZoom
         #region Variables
         private readonly MatrixTransform transform = new MatrixTransform();
         private Point pressedMouse;
-
         bool dragging;
+
+        List<UserControl> widgets = new List<UserControl>();
+
         #endregion
 
 
@@ -64,11 +66,16 @@ namespace WpfPanAndZoom
             w3.HeaderRectangle.Fill = Brushes.Red;
             Canvas.SetTop(w3, 400);
             Canvas.SetLeft(w3, 800);
+
+            widgets.Add(w1);
+            widgets.Add(w2);
+            widgets.Add(w3);
         }
 
         private void MwGrid_MouseUp(object sender, MouseButtonEventArgs e)
         {
             dragging = false;
+            selectedElement = null;
         }
 
         private void MwGrid_MouseMove(object sender, MouseEventArgs e)
@@ -82,15 +89,22 @@ namespace WpfPanAndZoom
 
                 ((UIElement)Content).RenderTransform = transform;
                 e.Handled = true;
-                //canvas.RenderTransform = transform;
             }
 
             if (dragging && e.LeftButton == MouseButtonState.Pressed)
             {
                 double x = Mouse.GetPosition(canvas).X;
                 double y = Mouse.GetPosition(canvas).Y;
+
+                if (selectedElement != null)
+                {
+                    Canvas.SetLeft(selectedElement, x);
+                    Canvas.SetTop(selectedElement, y);
+                }
             }
         }
+
+        UIElement selectedElement;
 
         private void MwGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -98,9 +112,14 @@ namespace WpfPanAndZoom
             {
                 pressedMouse = transform.Inverse.Transform(e.GetPosition(this));
             }
+            
 
             if (e.ChangedButton == MouseButton.Left)
             {
+                if( canvas.Children.Contains( (UIElement)e.Source))
+                {
+                    selectedElement = (UIElement)e.Source;
+                }
                 dragging = true;
             }
         }
@@ -110,7 +129,10 @@ namespace WpfPanAndZoom
         private void MwGrid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             float scale = 1.1f;
-            if (e.Delta < 0) scale = 1f / scale;
+            if (e.Delta < 0)
+            {
+                scale = 1f / scale;
+            }
             Point mouse = e.GetPosition(this);
 
             Matrix matrix = transform.Matrix;
@@ -119,8 +141,6 @@ namespace WpfPanAndZoom
 
             ((UIElement)Content).RenderTransform = transform;
             e.Handled = true;
-
-            //canvas.RenderTransform = transform;
         }
     }
 }
