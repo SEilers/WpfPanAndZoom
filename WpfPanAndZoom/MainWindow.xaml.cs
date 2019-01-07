@@ -25,11 +25,13 @@ namespace WpfPanAndZoom
         #region Variables
         private readonly MatrixTransform transform = new MatrixTransform();
         private Point pressedMouse;
+
         bool dragging;
-
-        List<UserControl> widgets = new List<UserControl>();
-
+        UIElement selectedElement;
+        Vector draggingDelta;
         #endregion
+
+
 
 
         public MainWindow()
@@ -66,10 +68,6 @@ namespace WpfPanAndZoom
             w3.HeaderRectangle.Fill = Brushes.Red;
             Canvas.SetTop(w3, 400);
             Canvas.SetLeft(w3, 800);
-
-            widgets.Add(w1);
-            widgets.Add(w2);
-            widgets.Add(w3);
         }
 
         private void MwGrid_MouseUp(object sender, MouseButtonEventArgs e)
@@ -87,8 +85,11 @@ namespace WpfPanAndZoom
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 transform.Matrix = translate.Value * transform.Matrix;
 
-                ((UIElement)Content).RenderTransform = transform;
-                e.Handled = true;
+                foreach( UIElement child in canvas.Children )
+                {
+                    child.RenderTransform = transform;
+                }
+                
             }
 
             if (dragging && e.LeftButton == MouseButtonState.Pressed)
@@ -98,13 +99,15 @@ namespace WpfPanAndZoom
 
                 if (selectedElement != null)
                 {
-                    Canvas.SetLeft(selectedElement, x);
-                    Canvas.SetTop(selectedElement, y);
+                    Canvas.SetLeft(selectedElement, x + draggingDelta.X);
+                    Canvas.SetTop(selectedElement, y + draggingDelta.Y);
                 }
             }
+
+            e.Handled = true;
         }
 
-        UIElement selectedElement;
+  
 
         private void MwGrid_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -119,9 +122,16 @@ namespace WpfPanAndZoom
                 if( canvas.Children.Contains( (UIElement)e.Source))
                 {
                     selectedElement = (UIElement)e.Source;
+                    Point mousePosition = Mouse.GetPosition(canvas);
+                    double x = Canvas.GetLeft(selectedElement);
+                    double y = Canvas.GetTop(selectedElement);
+                    Point elementPosition = new Point(x, y);
+                    draggingDelta = elementPosition - mousePosition; 
                 }
                 dragging = true;
             }
+
+            e.Handled = true;
         }
 
       
@@ -139,7 +149,29 @@ namespace WpfPanAndZoom
             matrix.ScaleAt(scale, scale, mouse.X, mouse.Y);
             transform.Matrix = matrix;
 
-            ((UIElement)Content).RenderTransform = transform;
+            foreach (UIElement child in canvas.Children)
+            {
+                double x = Canvas.GetLeft(child);
+                double y = Canvas.GetTop(child);
+
+                double sx = x * scale;
+                double sy = y * scale;
+
+                Canvas.SetLeft(child, sx);
+                Canvas.SetTop(child, sy);
+
+
+                child.RenderTransform = transform;
+            }
+
+            e.Handled = true;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            transform.Matrix = new ScaleTransform(1, 1).Value;
+            canvas.RenderTransform = transform;
+
             e.Handled = true;
         }
     }

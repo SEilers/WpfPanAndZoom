@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:WpfPanAndZoom.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="200">
-    <Border x:Name="Border" BorderBrush="Black" BorderThickness="3">
+    <Border x:Name="Border" BorderBrush="Black" BorderThickness="3" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>

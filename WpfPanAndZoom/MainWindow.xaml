@@ -7,9 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
- 
-        <Canvas x:Name="canvas"  Background="Gray"  >
 
-        </Canvas>
- 
+    <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+            <Canvas x:Name="canvas" Background="Gray" >
+            </Canvas>
+        <Button Height="20" Content="Reset" Click="Button_Click" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75"/>
+    </Grid>
+
 </Window>
