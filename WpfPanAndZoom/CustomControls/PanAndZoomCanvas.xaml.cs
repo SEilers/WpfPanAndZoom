@@ -38,10 +38,58 @@ namespace WpfPanAndZoom.CustomControls
             MouseUp += PanAndZoomCanvas_MouseUp;
             MouseMove += PanAndZoomCanvas_MouseMove;
             MouseWheel += PanAndZoomCanvas_MouseWheel;
+
+            // draw lines
+            for (int x = -4000; x <= 4000; x += 100)
+            {
+                Line l = new Line();
+                l.Stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x55, 0x55, 0x55));
+                l.X1 = x;
+                l.Y1 = -4000;
+                l.X2 = x;
+                l.Y2 = 4000;
+                if( x % 1000 == 0 )
+                {
+                    l.StrokeThickness = 6;
+                }
+                else
+                {
+                    l.StrokeThickness = 2;
+                }
+                l.HorizontalAlignment = HorizontalAlignment.Left;
+                l.VerticalAlignment = VerticalAlignment.Center;
+                Children.Add(l);
+            }
+
+            for (int y = -4000; y <= 4000; y += 100)
+            {
+                Line l = new Line();
+                l.Stroke = new SolidColorBrush(Color.FromArgb(0xFF, 0x55, 0x55, 0x55));
+                l.X1 = -4000;
+                l.Y1 = y;
+                l.X2 = 4000;
+                l.Y2 = y;
+                if (y % 1000 == 0)
+                {
+                    l.StrokeThickness = 6;
+                }
+                else
+                {
+                    l.StrokeThickness = 2;
+                }
+                l.HorizontalAlignment = HorizontalAlignment.Left;
+                l.VerticalAlignment = VerticalAlignment.Center;
+                Children.Add(l);
+            }
+
+
+
         }
 
         private void PanAndZoomCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            
+
             if (e.ChangedButton == MouseButton.Right)
             {
                 pressedMouse = transform.Inverse.Transform(e.GetPosition(this));
